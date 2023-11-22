@@ -5,31 +5,31 @@ DROP TABLE IF EXISTS stop_times ;
 DROP TABLE IF EXISTS stops ;
 
 CREATE TABLE agency (
-	agency_id varchar(255) NOT NULL,
-	agency_name varchar(255) NOT NULL,
+	agency_id varchar(255) ,
+	agency_name varchar(255) ,
 	
-	agency_url varchar(255) NOT NULL,
-	agency_timezone varchar(255) NOT NULL,
-	agency_lang varchar(255) NOT NULL,
-	agency_phone varchar(255) NOT NULL,
-	agency_fare_url varchar(255) NOT NULL,
-	agency_email varchar(255) NOT NULL,
-	
-	CONSTRAINT agency_pkey PRIMARY KEY (agency_id)
+	agency_url varchar(255) ,
+	agency_timezone varchar(255) ,
+	agency_lang varchar(255) ,
+	agency_phone varchar(255) ,
+	agency_fare_url varchar(255) ,
+	agency_email varchar(255) ,
+
+	PRIMARY KEY (agency_id)
 );
 
 CREATE TABLE routes (
-	route_id varchar(255) NOT NULL,
-	uid varchar(255) NOT NULL,
-	agency_id varchar(255) NOT NULL,
-	trip_id varchar(255) NOT NULL,
+	route_id varchar(255) ,
+	uid varchar(255) ,
+	agency_id varchar(255) ,
+	trip_id varchar(255) ,
 	
-	route_short_name varchar(255) NOT NULL,
-	route_long_name varchar(255) NOT NULL,
-	route_desc varchar(255) NOT NULL,
-	route_url varchar(255) NOT NULL,
-	route_color varchar(255) NOT NULL,
-	route_text_color varchar(255) NOT NULL,
+	route_short_name varchar(255) ,
+	route_long_name varchar(255) ,
+	route_type varchar(255) ,
+	route_url varchar(255) ,
+	route_color varchar(255) ,
+	route_text_color varchar(255) ,
 	
 	route_sort_order int4 NULL,
 	continuous_pickup int4 NULL,
@@ -43,13 +43,13 @@ CREATE TABLE routes (
 CREATE UNIQUE INDEX route_id_idx ON routes(route_id) ;
 
 CREATE TABLE trips(
-	trip_id varchar(255) NOT NULL,
-	route_id varchar(255) NOT NULL,
-	service_id varchar(255) NOT NULL,
-	trip_headsign varchar(255) NOT NULL,
-	trip_short_name varchar(255) NOT NULL,
-	block_id varchar(255) NOT NULL,
-	shape_id varchar(255) NOT NULL,
+	trip_id varchar(255) ,
+	route_id varchar(255) ,
+	service_id varchar(255) ,
+	trip_headsign varchar(255) ,
+	trip_short_name varchar(255) ,
+	block_id varchar(255) ,
+	shape_id varchar(255) ,
 	
 	direction_id int4 NULL,
 	continuous_drop_off int4 NULL,
@@ -62,12 +62,13 @@ CREATE TABLE trips(
 CREATE UNIQUE INDEX trip_id_idx ON trips(trip_id) ;
 
 CREATE TABLE stop_times(
-	trip_id varchar(255) NOT NULL,
-	stop_times_id varchar(255) NOT NULL,
-	stop_headsign varchar(255) NOT NULL,
+	trip_id varchar(255) ,
+	stop_times_id varchar(255) ,
+	stop_headsign varchar(255) ,
+	stop_id varchar(255) ,
 
-	departure_time time NOT NULL,
-	arrival_time time NOT NULL,
+	departure_time time ,
+	arrival_time time ,
 	
 	stop_sequence int4 NULL,
 	pickup_type int4 NULL,
@@ -80,20 +81,21 @@ CREATE TABLE stop_times(
 	
 	CONSTRAINT stop_times_pk PRIMARY KEY (stop_times_id),
 	CONSTRAINT stop_times_trips_fk FOREIGN KEY (trip_id) REFERENCES trips(trip_id)
+	CONSTRAINT stops_stoptimes_fk FOREIGN KEY (stop_id) REFERENCES stops(stop_id)
 );
 CREATE UNIQUE INDEX stop_times_id_idx ON stop_times(stop_times_id) ;
 
 CREATE TABLE stops(
-	stop_times_id varchar(255) NOT NULL,
-	stops_id varchar(255) NOT NULL,
+	stop_times_id varchar(255) ,
+	stop_id varchar(255) ,
 	
-	stop_code varchar(255) NOT NULL,
-	stop_name varchar(255) NOT NULL,
-	stop_desc varchar(255) NOT NULL,
-	zone_id varchar(255) NOT NULL,
-	stop_url varchar(255) NOT NULL,
-	platform_code varchar(255) NOT NULL,
-	parent_station varchar(255) NOT NULL,
+	stop_code varchar(255) ,
+	stop_name varchar(255) ,
+	stop_desc varchar(255) ,
+	zone_id varchar(255) ,
+	stop_url varchar(255) ,
+	platform_code varchar(255) ,
+	parent_station varchar(255) ,
 	
 	stop_lat float4 NULL,
 	stop_lon float4 NULL,
@@ -101,9 +103,8 @@ CREATE TABLE stops(
 	wheelchair_boarding int4 NULL,
 	level_id int4 NULL,
 	
-	stop_timezone time NOT NULL,
+	stop_timezone time ,
 	
-	CONSTRAINT stop_pk PRIMARY KEY (stops_id),
-	CONSTRAINT stops_stoptimes_fk FOREIGN KEY (stop_times_id) REFERENCES trips(stop_times_id)
+	CONSTRAINT stop_pk PRIMARY KEY (stop_id)
 );
-CREATE UNIQUE INDEX stops_id_idx ON stops(stops_id) ;
+CREATE UNIQUE INDEX stops_id_idx ON stops(stop_id) ;
